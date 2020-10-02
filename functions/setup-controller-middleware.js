@@ -14,3 +14,22 @@ exports.setupControllerMiddleware =
 
     return router;
   }
+
+exports.setupControllerServiceMiddleware =
+  function (inModel, outModel, serviceCallback, defaultStatusCode = 200) {
+    const router = Router();
+    router.use('/',
+      mapBodyMiddleware(inModel),
+      async (req, res, next) => {
+        try {
+          res.mappedBody = await Promise.resolve(serviceCallback(req.mappedBody, req, res));
+          next();
+        } catch (err) {
+          next(err);
+        }
+      },
+      mapResponseMiddleware(outModel, defaultStatusCode)
+    );
+
+    return router;
+  }

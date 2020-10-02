@@ -157,3 +157,23 @@ If you want to override the status code you can pass your customized number to t
 ### errorMiddleware
 
 You can use this middleware to catch the errors thrown by the map function. It has a unique optional parameter to use if you want to override the default mapping for errors.
+
+## Other functions
+
+I'm providing some functions to help setup routes in express.js
+
+1. `setupControllerServiceMiddleware(inModel, outModel, serviceCallback, defaultStatusCode = 200)`
+
+Use this function to generate an express Middleware that maps the request.body using the `inModel` argument, following by a call to the `serviceCallback` method. This method will be called with the arguments (model, req, res). The return value of the serviceCallback will be mapped using the `outModel` argument and returned to the http client with an status code provided in the optional `defaultStatusCode` parameter.
+
+>*In case of errors, this middleware will call the next(err) express function.*
+
+2. `setupControllerMiddleware(inModel, outModel, middleware, defaultStatusCode = 200)`
+
+Use this function to generate an express Middleware that maps the request.body using the `inModel` argument. After the req.body is mapped, the middleware provided in the `middleware` argument will be called.
+
+This middleware will have access to the mapped object in the req.mappedBody variable. You can do any logic you need to made in order to process the request. 
+
+After the request process, you can end the request inside of the `middleware` or set the variable res.mappedBody to the result you want to map using the `outModel` model. For this you have to call `next()` inside of your customized middleware. 
+
+>*If you call next with an `Error` instance as argument, the first express.js error handler middleware will be called skipping any following non-error handlers middlewares.*
