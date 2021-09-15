@@ -32,13 +32,13 @@ map(sourceObject, model).then(result => {
 ```
 
 ## Defining Models
-A model is defined which one key for each map you need to have int the final destination object.
+A model is defined with one key for each map you need to have in the final destination object.
 
 For each key you have to define a `type` key with one of the following values: `"direct"`, `"number"`, `"date"` or `"custom"`.
 
 ### Using `{type = 'direct'}`
 
-Use this type to extract a value directly from the a key of the sourceObject. If you specify a `from` key, the value will be retrieved from the key you specify in that `from` key. Otherwise the value the value will be retrieved from the same key you are defining.
+Use this type to extract a value directly from the a key of the sourceObject. If you specify a `from` key, the value will be retrieved from the key you specify as a value for the `from` key. Otherwise the value the value will be retrieved from the same name of the key you are defining.
 
 see the keys `name` and `id` from the sample above.
 
@@ -134,7 +134,7 @@ expressApp.use('/endpoint', mapBodyMiddleware(model), (req, res) => {
 });
 ```
 
-When you provide this middleware in the endpoint, the req.body object will be used as a `sourceObject` to be mapped used the `model` provided. If no errors the mapped model will be available in the `req.mappedBody` variable for the following middlewares.
+When you provide this middleware in the endpoint, the req.body object will be used as a `sourceObject` to be mapped using the `model` provided. If no errors, the mapped model will be available in the `req.mappedBody` variable for the following middlewares.
 
 >if there is no subsequents middlewares provided, mapBodyMiddleware will throw an error with the message `'mapBodyMiddleware expect a next function to be defined.'`.
 
